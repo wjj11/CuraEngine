@@ -73,6 +73,22 @@ endif()
 
 if (MSVC)
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /permissive- /Zc:twoPhase- /EHsc /W3")
+	foreach(flag_var
+            CMAKE_CXX_FLAGS
+            CMAKE_CXX_FLAGS_DEBUG
+            CMAKE_CXX_FLAGS_RELEASE
+            CMAKE_CXX_FLAGS_MINSIZEREL
+            CMAKE_CXX_FLAGS_RELWITHDEBINFO
+            )
+            if(${flag_var} MATCHES "/MD")
+                string(REGEX REPLACE "/MD" "/MT" ${flag_var} "${${flag_var}}")
+            endif()
+			if(${flag_var} MATCHES "/MTd")
+                string(REGEX REPLACE "/MTd" "/MT" ${flag_var} "${${flag_var}}")
+            endif()
+			
+    endforeach()
+	
     if (MSVC_STATIC_RUNTIME)
         foreach(flag_var
             CMAKE_CXX_FLAGS
@@ -84,13 +100,11 @@ if (MSVC)
             if(${flag_var} MATCHES "/MD")
                 string(REGEX REPLACE "/MD" "/MT" ${flag_var} "${${flag_var}}")
             endif()
-			if(${flag_var} MATCHES "/MDd")
-                string(REGEX REPLACE "/MDd" "/MTd" ${flag_var} "${${flag_var}}")
+			if(${flag_var} MATCHES "/MTd")
+                string(REGEX REPLACE "/MTd" "/MT" ${flag_var} "${${CMAKE_CXX_FLAGS_RELEASE}}")
             endif()
         endforeach()
     endif()
-	
-	
 else()
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall") # Add warnings
 endif()

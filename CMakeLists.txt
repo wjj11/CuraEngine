@@ -20,6 +20,7 @@ if(ENABLE_ARCUS)
     # this, which defaults to OFF. We need to force this option to ON instead.
     set(protobuf_MODULE_COMPATIBLE ON CACHE INTERNAL "" FORCE)
     find_package(Protobuf 3.0.0 REQUIRED)
+	include_directories("E:/Cura_Project/install/include")
     find_package(Arcus REQUIRED)
     add_definitions(-DARCUS)
 endif()
